@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-course",
+  "version": "1.0.0",
+  "description": "node js course",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuliyaMaherramava/nodejs-course.git"
+  },
+  "author": "Yuliya Maherramava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuliyaMaherramava/nodejs-course/issues"
+  },
+  "homepage": "https://github.com/yuliyaMaherramava/nodejs-course#readme",
+  "dependencies": {
+    "express": "4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.7"
+  }
+}
