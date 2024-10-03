@@ -1,4 +1,5 @@
 /node_modules
 *.code-workspace
 _nodemon.log
+/task1/statistics.json
 
