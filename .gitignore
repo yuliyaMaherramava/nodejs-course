@@ -2,4 +2,5 @@
 *.code-workspace
 _nodemon.log
 /task1/statistics.json
+/task3/statistics.json
 
