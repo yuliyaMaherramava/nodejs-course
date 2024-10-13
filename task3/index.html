@@ -100,21 +100,21 @@
           id="jsonResults"
           onclick="downloadStatistics('application/json')"
         >
-          Get results in JSON format (see console)
+          Download results in JSON format
         </button>
         <button
           disabled
           id="xmlResults"
           onclick="downloadStatistics('application/xml')"
         >
-          Get results in XML format (see console)
+          Download results in XML format
         </button>
         <button
           disabled
           id="htmlResults"
           onclick="downloadStatistics('text/html')"
         >
-          Get results in HTML format (see below and console)
+          Download results in HTML format
         </button>
       </div>
     </div>
@@ -181,6 +181,14 @@
         await loadStats();
       }
 
+      function downloadBlob(file, fileName) {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(file);
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(link.href); // Clean up the object URL to free memory
+      }
+
       async function downloadStatistics(format) {
         try {
           const response = await fetch("/downloadStats", {
@@ -188,23 +196,10 @@
             headers: { Accept: format },
           });
 
-          switch (format) {
-            case "application/json":
-              const json = await response.json();
-              console.log("JSON format", json);
-              break;
-            case "application/xml":
-              const xml = await response.text();
-              console.log("XML format", xml);
-              break;
-            case "text/html":
-              const html = await response.text();
-              console.log("HTML format", html);
-              document
-                .getElementById("buttonGroup")
-                .insertAdjacentHTML("beforeend", html);
-              break;
-          }
+          const file = await response.blob();
+          const fileExtension = format.split("/")[1];
+
+          downloadBlob(file, `statistics.${fileExtension}`);
         } catch (error) {
           console.error("Error downloading statistics:", error);
           alert("An error occurred while downloading statistics.");
