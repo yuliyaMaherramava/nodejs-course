@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Postman</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>Saved Requests</h2>
+        <ul id="savedRequestsList"></ul>
+      </div>
+      <div class="main-content">
+        <form id="requestForm">
+          <label for="url">URL:</label>
+          <input type="text" id="url" placeholder="Enter URL" />
+
+          <label for="method">Method:</label>
+          <select id="method" onchange="toggleChangeMethod()">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+
+          <div id="get-params">
+            <div class="get-params-header">
+              <h4>GET Parameters</h4>
+              <button type="button" onclick="addGetParam()">Add</button>
+            </div>
+          </div>
+
+          <label for="headers">Headers (JSON format):</label>
+          <textarea
+            id="headers"
+            placeholder='{"Content-Type": "application/json"}'
+          ></textarea>
+
+          <div id="body-field">
+            <label for="body">Body:</label>
+            <textarea id="body" placeholder='{"key": "value"}'></textarea>
+          </div>
+
+          <button type="button" class="sendButton" onclick="sendFormRequest()">
+            Send Request
+          </button>
+          <button type="button" class="saveButton" onclick="saveRequest()">
+            Save Request
+          </button>
+          <button type="button" class="clearButton" onclick="clearForm()">
+            Clear Form
+          </button>
+        </form>
+
+        <h2>Response:</h2>
+        <p>Status Code: <span id="statusCode"></span></p>
+        <p>Headers:</p>
+        <pre id="responseHeaders"></pre>
+        <p>Body:</p>
+        <pre id="responseBody"></pre>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
