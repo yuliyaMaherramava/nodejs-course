@@ -4,8 +4,10 @@ const validator = require("express-validator");
 const webserver = express();
 const PORT = 8080;
 
+// for using ejs (template engine)
 webserver.set("view engine", "ejs");
 webserver.set("views", path.join(__dirname, "views"));
+
 webserver.use(express.urlencoded({ extended: true }));
 webserver.use(express.static(path.join(__dirname)));
 
