@@ -226,36 +226,41 @@ const sendRequest = async (url, method, headers, body) => {
       }),
     });
 
+    const parsedResponse = await response.json();
+
     // Show results
-    document.getElementById("statusCode").innerText = response.status;
+    document.getElementById("statusCode").innerText = parsedResponse.status;
     document.getElementById("responseHeaders").innerText = JSON.stringify(
-      [...response.headers],
+      parsedResponse.headers,
       null,
       2
     );
 
-    const contentType = response.headers.get("Content-Type");
+    const contentType = parsedResponse.headers["content-type"]
+      ? parsedResponse.headers["content-type"][0]
+      : "";
+
     const responseBodyElement = document.getElementById("responseBody");
-    let responseData;
 
     if (contentType.includes(CONTENT_TYPES.JSON)) {
-      responseData = await response.json();
-      responseBodyElement.innerText = JSON.stringify(responseData, null, 2);
+      responseBodyElement.innerText = JSON.stringify(
+        parsedResponse.body,
+        null,
+        2
+      );
     } else if (
       contentType.includes(CONTENT_TYPES.BLOB) ||
       contentType.includes(CONTENT_TYPES.IMG)
     ) {
-      responseData = await response.blob();
       const imgElement = document.createElement("img");
-      imgElement.src = URL.createObjectURL(responseData);
+      imgElement.src = `data:${contentType};base64,${parsedResponse.body}`;
       imgElement.alt = "Response Image";
       imgElement.style.maxWidth = "100%";
       imgElement.style.height = "auto";
       responseBodyElement.innerHTML = "";
       responseBodyElement.appendChild(imgElement);
     } else {
-      responseData = await response.text(); // Fallback to text for other types
-      responseBodyElement.innerText = responseData;
+      responseBodyElement.innerText = parsedResponse.body; // Fallback to text for other types
     }
   } catch (error) {
     document.getElementById("statusCode").innerText = "Error";

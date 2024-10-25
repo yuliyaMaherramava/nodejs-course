@@ -72,12 +72,16 @@ webserver.post("/makeRequest", async (req, res) => {
     ) {
       const blob = await response.blob();
       const arrayBuffer = await blob.arrayBuffer();
-      responseData = Buffer.from(arrayBuffer);
+      responseData = Buffer.from(arrayBuffer).toString("base64");
     } else {
       responseData = await response.text(); // Fallback to text for other types
     }
 
-    res.status(response.status).send(responseData);
+    res.status(response.status).json({
+      status: response.status,
+      headers: response.headers.raw(),
+      body: responseData,
+    });
   } catch (err) {
     console.log(err);
     res.status(STATUS.INTERNAL_SERVER_ERROR).send(err);
