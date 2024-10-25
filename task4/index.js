@@ -58,12 +58,6 @@ webserver.post("/makeRequest", async (req, res) => {
 
     let responseData;
 
-    Object.keys(response.headers).forEach((key) =>
-      res.setHeader(key, response.headers.get(key))
-    );
-
-    res.setHeader("Content-Type", contentType);
-
     if (contentType.includes(CONTENT_TYPES.JSON)) {
       responseData = await response.json();
     } else if (
