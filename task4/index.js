@@ -52,29 +52,14 @@ webserver.post("/makeRequest", async (req, res) => {
       method,
       headers,
       ...(method === "GET" ? {} : { body: JSON.stringify(body) }),
+      redirect: "manual",
     });
 
-    const contentType = response.headers.get("content-type");
-
-    let responseData;
-
-    if (contentType.includes(CONTENT_TYPES.JSON)) {
-      responseData = await response.json();
-    } else if (
-      contentType.includes(CONTENT_TYPES.BLOB) ||
-      contentType.includes(CONTENT_TYPES.IMG)
-    ) {
-      const blob = await response.blob();
-      const arrayBuffer = await blob.arrayBuffer();
-      responseData = Buffer.from(arrayBuffer).toString("base64");
-    } else {
-      responseData = await response.text(); // Fallback to text for other types
-    }
-
-    res.status(response.status).json({
+    res.status(STATUS.OK).json({
       status: response.status,
       headers: response.headers.raw(),
-      body: responseData,
+      body: Buffer.from(await response.arrayBuffer()).toString("base64"),
+      contentType: response.headers.get("content-type"),
     });
   } catch (err) {
     console.log(err);

@@ -213,6 +213,21 @@ async function sendFormRequest() {
   }
 }
 
+// Default to "utf-8" if no contentType or charset is found
+const getEncoding = (contentType) =>
+  contentType?.match(/charset=([^;]+)/)?.[1] || "utf-8";
+
+const decodeBase64 = (base64String, contentType) => {
+  const decodedText = atob(base64String); // Decodes the base64 string into plain text
+  // Uint8Array.from converts the decodedText to a byte array by mapping each character to its corresponding character code using (c) => c.charCodeAt(0)
+  // Decodes a byte array into a string using TextDecoder,
+  // .decode() method converts the byte array (resulting from Uint8Array.from) back into a string.
+  const result = new TextDecoder(getEncoding(contentType)).decode(
+    Uint8Array.from(decodedText, (c) => c.charCodeAt(0))
+  );
+  return result;
+};
+
 const sendRequest = async (url, method, headers, body) => {
   try {
     const response = await fetch("/makeRequest", {
@@ -236,15 +251,15 @@ const sendRequest = async (url, method, headers, body) => {
       2
     );
 
-    const contentType = parsedResponse.headers["content-type"]
-      ? parsedResponse.headers["content-type"][0]
-      : "";
+    const contentType = parsedResponse.contentType;
 
     const responseBodyElement = document.getElementById("responseBody");
 
     if (contentType.includes(CONTENT_TYPES.JSON)) {
-      responseBodyElement.innerText = JSON.stringify(
-        parsedResponse.body,
+      const jsonData = decodeBase64(parsedResponse.body, contentType);
+
+      responseBodyElement.textContent = JSON.stringify(
+        JSON.parse(jsonData),
         null,
         2
       );
@@ -254,13 +269,13 @@ const sendRequest = async (url, method, headers, body) => {
     ) {
       const imgElement = document.createElement("img");
       imgElement.src = `data:${contentType};base64,${parsedResponse.body}`;
-      imgElement.alt = "Response Image";
-      imgElement.style.maxWidth = "100%";
-      imgElement.style.height = "auto";
-      responseBodyElement.innerHTML = "";
+      responseBodyElement.innerHTML = ""; // Clear previous content
       responseBodyElement.appendChild(imgElement);
     } else {
-      responseBodyElement.innerText = parsedResponse.body; // Fallback to text for other types
+      responseBodyElement.innerText = decodeBase64(
+        parsedResponse.body,
+        contentType
+      );
     }
   } catch (error) {
     document.getElementById("statusCode").innerText = "Error";
