@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book your place!</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Book a place on the conference</h1>
+      <% if (errors && errors.length > 0) { %>
+      <p>We found errors in your form. Please correct them and send again:</p>
+      <ul class="errorContainer">
+        <% errors.forEach(function(error) { %>
+        <li class="error"><%= error.msg %></li>
+        <% }); %>
+      </ul>
+      <% } %>
+      <form action="/submit" method="POST" id="registrationForm">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" value="<%= name %>" />
+        <br /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="<%= email %>" />
+        <br /><br />
+        <label for="age"> Age:</label>
+        <input type="number" id="age" name="age" value="<%= age %>" />
+        <br /><br />
+        <label for="birthDate">Date of birth:</label>
+        <input
+          type="date"
+          id="birthDate"
+          name="birthDate"
+          value="<%= birthDate %>"
+        />
+        <br /><br />
+        <label for="phone">Mobile Phone:</label>
+        <input type="text" id="phone" name="phone" value="<%= phone %>" />
+        <br /><br />
+        <button type="submit">Book</button>
+      </form>
+    </div>
+  </body>
+</html>
