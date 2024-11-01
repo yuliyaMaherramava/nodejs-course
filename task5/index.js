@@ -16,7 +16,7 @@ const STATUS = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-  REDIRECT: 307,
+  REDIRECT: 303,
 };
 
 const createValidator = [
@@ -47,7 +47,12 @@ webserver.post("/submit", createValidator, (req, res) => {
     const result = validator.validationResult(req);
 
     if (result.isEmpty()) {
-      res.redirect(STATUS.REDIRECT, "/results");
+      const data = validator.matchedData(req);
+
+      const params = new URLSearchParams();
+      Object.entries(data).forEach(([key, value]) => params.append(key, value));
+
+      res.redirect(STATUS.REDIRECT, `/results?${params.toString()}`);
     }
     res.render("view", { ...req.body, errors: result.array() });
   } catch (err) {
@@ -55,9 +60,9 @@ webserver.post("/submit", createValidator, (req, res) => {
   }
 });
 
-webserver.post("/results", (req, res) => {
+webserver.get("/results", (req, res) => {
   try {
-    res.render("successfulView", req.body);
+    res.render("successfulView", req.query);
   } catch (err) {
     res.status(STATUS.INTERNAL_SERVER_ERROR).send(err);
   }
