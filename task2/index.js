@@ -8,8 +8,8 @@ const PORT = 8080;
 webserver.set("view engine", "ejs");
 webserver.set("views", path.join(__dirname, "views"));
 
-webserver.use(express.urlencoded({ extended: true }));
-webserver.use(express.static(path.join(__dirname)));
+webserver.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+webserver.use(express.static(path.join(__dirname))); // for css files to be loaded on browser
 
 const STATUS = {
   OK: 200,

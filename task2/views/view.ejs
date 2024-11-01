@@ -9,12 +9,14 @@
   <body>
     <div class="container">
       <h1>Book a place on the conference</h1>
-      We found errors in your form. Please correct them and send again:
+      <% if (errors && errors.length > 0) { %>
+      <p>We found errors in your form. Please correct them and send again:</p>
       <ul class="errorContainer">
         <% errors.forEach(function(error) { %>
         <li class="error"><%= error.msg %></li>
         <% }); %>
       </ul>
+      <% } %>
       <form action="/submit" method="GET" id="registrationForm">
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" value="<%= name %>" />
