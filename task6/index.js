@@ -11,7 +11,7 @@ webserver.set("view engine", "handlebars");
 webserver.set("views", path.join(__dirname, "views"));
 
 webserver.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-webserver.use(express.static(path.resolve(__dirname, "static"))); // for css files to be loaded on browser
+webserver.use(express.static(path.join(__dirname, "static")));
 
 const STATUS = {
   OK: 200,
