@@ -59,7 +59,11 @@ webserver.post("/submit", createValidator, (req, res) => {
     }
     res.render("default_page", {
       layout: "main",
-      ...req.body,
+      name: `${req.body.name}`,
+      email: `${req.body.email}`,
+      age: `${req.body.age}`,
+      birthDate: `${req.body.birthDate}`,
+      phone: `${req.body.phone}`,
       errors: result.array(),
     });
   } catch (err) {
