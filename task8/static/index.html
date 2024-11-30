@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>SQL Explorer</h1>
+        <p>Enter SQL query</p>
+      </header>
+      <main>
+        <textarea
+          id="query"
+          placeholder="For example: SELECT * FROM books;"
+        ></textarea>
+        <button id="execute">Execute</button>
+        <div id="result-container">
+          <h2>Results:</h2>
+          <div id="result"></div>
+        </div>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
